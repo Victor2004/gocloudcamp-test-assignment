@@ -1,3 +1,4 @@
+# Запуск: python3 -m uvicorn main:app --reload
 from fastapi import FastAPI, Request, Body, Depends
 from fastapi.responses import HTMLResponse
 

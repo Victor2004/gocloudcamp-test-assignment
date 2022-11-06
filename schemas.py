@@ -2,4 +2,4 @@ from pydantic import BaseModel
 
 class Item(BaseModel):
     service: str
-    data: list
+    data: str

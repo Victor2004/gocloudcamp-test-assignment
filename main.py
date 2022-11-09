@@ -1,4 +1,5 @@
 # Запуск: python3 -m uvicorn main:app --reload
+# ngrok http 8000
 from fastapi import FastAPI, Request, Body, Depends
 from fastapi.responses import HTMLResponse
 
@@ -26,16 +27,16 @@ def get_session():
 #     session.refresh(item);
 # create_default_config();
 
-@app.get("/help")
+@app.get("/")
 def help():
     return "Hello world!"
 
-@app.get("/")
+@app.get("/id")
 def get_item(id: str, session: Session = Depends(get_session)):
     item = session.query(models.Item).get(id)
     return item
 
-@app.post("/")
+@app.post("/id")
 def add_item(item: schemas.Item, session = Depends(get_session)):
     item = models.Item(service = item.service, data = item.data)
     session.add(item)
@@ -43,16 +44,16 @@ def add_item(item: schemas.Item, session = Depends(get_session)):
     session.refresh(item)
     return item
 
-@app.put("/{id}")
+@app.put("/id/{id}")
 def update_item(id:int, item:schemas.Item, session = Depends(get_session)):
     itemObject = session.query(models.Item).get(id)
     itemObject.task = item.task
     session.commit()
     return itemObject
 
-@app.delete("/{id}")
+@app.delete("/id/{id}")
 def delete_item(id:int, session = Depends(get_session)):
-    if myservice.use_config() == id:
+    if myservice.get_congif() == id:
         return "You can not delete the config used by the service."
     itemObject = session.query(models.Item).get(id)
     session.delete(itemObject)
@@ -62,12 +63,10 @@ def delete_item(id:int, session = Depends(get_session)):
 
 @app.get("/service")
 def get_service_config(session: Session = Depends(get_session)):
-    item = None
-    if myservice.use_config():
-        item = session.query(models.Item).get(myservice.use_config())
-    return item
+    all_configs = session.query(models.Item).all()
+    return all_configs
 
 @app.put("/service/{id}")
 def update_service_config(id:int, session: Session = Depends(get_session)):
-    item = session.query(models.Item).get(myservice.use_config(id))
+    item = session.query(models.Item).get(myservice.get_congif(id))
     return "Config update!", item

@@ -62,7 +62,7 @@ def delete_item(id:int, session = Depends(get_session)):
     return f"Config id={id} delete."
 
 @app.get("/service")
-def get_service_config(session: Session = Depends(get_session)):
+def get_service_configs(session: Session = Depends(get_session)):
     all_configs = session.query(models.Item).all()
     return all_configs
 

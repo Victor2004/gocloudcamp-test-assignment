@@ -22,7 +22,7 @@ def get_session():
 
 @app.get("/")
 def help():
-    return "Hello world!"
+    return "Docs: https://github.com/Victor2004/gocloudcamp-test-assignment/blob/main/README.md "
 
 @app.get("/id")
 def get_item(id: str, session: Session = Depends(get_session)):
@@ -40,7 +40,6 @@ def add_item(item: schemas.Item, session = Depends(get_session)):
 @app.put("/id/{id}")
 def update_item(id:int, item:schemas.Item, session = Depends(get_session)):
     itemObject = session.query(models.Item).get(id)
-    itemObject.task = item.task
     session.commit()
     return itemObject
 

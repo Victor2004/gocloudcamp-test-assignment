@@ -6,7 +6,7 @@
 
 #### Создание конфига
 
-```
+```bash
 curl -X 'POST' \
   'http://127.0.0.1:8000/id' \
   -H 'accept: application/json' \
@@ -23,17 +23,51 @@ curl -X 'POST' \
 
 #### Получение конфига
 
-`curl 'http://127.0.0.1:8000/id?id=1'`
+```bash
+curl 'http://127.0.0.1:8000/id?id=1'
+```
 
 ```json
 {"data":"value1","service":"managed-k8s","id":1}
 ```
 
+#### Изменение конфига
+
+```bash
+curl -X 'PUT' \
+  'http://127.0.0.1:8000/id/1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "service": "newtext",
+  "data": "NEWdata"
+}'
+```
+
+```json
+{"data":"value1","service":"string","id":1}
+```
+
+#### Удаление конфига
+
+```bash
+curl -X 'DELETE' \
+  'http://127.0.0.1:8000/id/1' \
+  -H 'accept: application/json'
+```
+
+```json
+"Config id=1 delete."
+```
+
+
 ### Использование сервиса
 
-#### Изменить используемый сервисом config
+##### По умолчанию сервис не использует ни какой конфиг, требуется назначить конфиг который будет использовать сервис.
 
-```
+#### Изменить/назначить используемый сервисом конфиг
+
+```bash
 curl -X 'PUT' \
   'http://127.0.0.1:8000/service/1' \
   -H 'accept: application/json'
@@ -43,3 +77,28 @@ curl -X 'PUT' \
 ["Config update!",{"data":"value1","service":"managed-k8s","id":1}]
 ```
 
+#### Получить содержимое всех конфигов
+
+```bash
+curl 'http://127.0.0.1:8000/service'
+```
+
+```json
+[
+  {
+    "data": "value1",
+    "service": "string",
+    "id": 1
+  },
+  {
+    "data": "value99",
+    "service": "managed-k8s",
+    "id": 2
+  },
+  {
+    "data": "2011",
+    "service": "managed-t9x0",
+    "id": 3
+  }
+]
+```

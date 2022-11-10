@@ -20,13 +20,6 @@ def get_session():
     finally:
         session.close()
 
-# def create_default_config(session = Depends(get_session)):;
-#     item = models.Item(service = item.service, data = item.data);
-#     session.add(item);
-#     session.commit();
-#     session.refresh(item);
-# create_default_config();
-
 @app.get("/")
 def help():
     return "Hello world!"
@@ -68,5 +61,5 @@ def get_service_configs(session: Session = Depends(get_session)):
 
 @app.put("/service/{id}")
 def update_service_config(id:int, session: Session = Depends(get_session)):
-    item = session.query(models.Item).get(myservice.get_congif(id))
+    item = session.query(models.Item).get(myservice.get_congif(id)) 
     return "Config update!", item

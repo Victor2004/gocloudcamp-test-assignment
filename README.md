@@ -6,19 +6,40 @@
 
 #### Создание конфига
 
-`curl -d "@data.json" -H "Content-Type: application/json" -X POST http://localhost:8000`
+```
+curl -X 'POST' \
+  'http://127.0.0.1:8000/id' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "service": "managed-k8s",
+  "data": "value1"
+}'
+```
 
 ```json
-{
-    "service": "managed-k8s",
-    "data": "random text"
-}
+{"data":"value1","service":"managed-k8s","id":1}
 ```
 
 #### Получение конфига
 
-`curl http://127.0.0.1:8000/?id=1`
+`curl 'http://127.0.0.1:8000/id?id=1'`
 
 ```json
-{"service":"managed-k8s","id":1,"data":"random text"}
+{"data":"value1","service":"managed-k8s","id":1}
 ```
+
+### Использование сервиса
+
+#### Изменить используемый сервисом config
+
+```
+curl -X 'PUT' \
+  'http://127.0.0.1:8000/service/1' \
+  -H 'accept: application/json'
+```
+
+```json
+["Config update!",{"data":"value1","service":"managed-k8s","id":1}]
+```
+
